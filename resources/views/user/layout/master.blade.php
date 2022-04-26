@@ -34,22 +34,34 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#">Your Order</a>
                     </li>
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             User
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Login</a>
-                            <a class="dropdown-item" href="#">Register</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Welcome Guy!</a>
+                            @if (Auth::check())
+                            <a class="dropdown-item" href="#">Welcome {{Auth::user()->name}} !</a>
+                            <a  class="dropdown-item" href="{{url('/logout')}}" >Logout</a>
+                            @else
+                            <a  class="dropdown-item" href="#" >Login</a>
+                            <a   class="dropdown-item" href="#">Register</a>
+
+                            @endif
+
+
+
                         </div>
                     </li>
+
+
+
+
                     <li class="nav-item">
                         <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">
                             Cart
-                            <small class="badge badge-danger">7</small>
+                            <small class="badge badge-danger">{{$cart_count}}</small>
                         </a>
                     </li>
                 </ul>
@@ -69,8 +81,11 @@
                         recusandae quasi tempore placeat aliquam autem, a soluta nisi totam
                         temporibus dolorem!
                     </p>
-                    <a href="" class="btn btn-outline-primary">SignUp</a>
-                    <a href="" class="btn btn-primary">Login</a>
+                    @if (!Auth::check())
+                    <a href="{{url('/register')}}" class="btn btn-outline-primary">SignUp</a>
+                    <a href="{{url('/login')}}" class="btn btn-primary">Login</a>
+
+                    @endif
                 </div>
                 <div class="col-md-6 text-center">
                     <img class=""
@@ -85,8 +100,10 @@
         <div class="row">
             <!-- For Category and Information -->
             <div class="col-md-4">
+                @if (Auth::check())
                 <div class="card">
                     <div class="card-body">
+
                         <ul class="list-group">
                             <li class="list-group-item bg-dark text-white">
                                 Your Order List
@@ -95,8 +112,11 @@
                                 Your Profile Info
                             </li>
                         </ul>
+
                     </div>
                 </div>
+                @endif
+                @if (Auth::check())
                 <div class="card">
                     <div class="card-body">
                         <ul class="list-group">
@@ -104,25 +124,17 @@
                                 All Category
 
                             </li>
+                            @foreach ($category as $c )
                             <li class="list-group-item">
-                                Man Shirts
-                                <span class="badge badge-primary float-right">4</span>
+                                {{$c->name}}
+                                <span class="badge badge-primary float-right">{{$c->product_count}}</span>
                             </li>
-                            <li class="list-group-item">
-                                Man Shirts
-                                <span class="badge badge-primary float-right">4</span>
-                            </li>
-                            <li class="list-group-item">
-                                Man Shirts
-                                <span class="badge badge-primary float-right">4</span>
-                            </li>
-                            <li class="list-group-item">
-                                Man Shirts
-                                <span class="badge badge-primary float-right">4</span>
-                            </li>
+                            @endforeach
+
                         </ul>
                     </div>
                 </div>
+                @endif
             </div>
             <div class="col-md-8">
                 <div class="card">
@@ -139,10 +151,16 @@
     </div>
 
 
-    <script src="https://demos.creative-tim.com/argon-dashboard/assets/vendor/jquery/dist/jquery.min.js"></script>
+    {{-- <script src="https://demos.creative-tim.com/argon-dashboard/assets/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="https://demos.creative-tim.com/argon-dashboard/assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js">
     </script>
-    <script src="https://demos.creative-tim.com/argon-dashboard/assets/js/argon.min.js?v=1.2.0"></script>
+    <script src="https://demos.creative-tim.com/argon-dashboard/assets/js/argon.min.js?v=1.2.0"></script> --}}
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2" crossorigin="anonymous"></script>
+
 </body>
 
 </html>
