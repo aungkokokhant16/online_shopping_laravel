@@ -59,7 +59,7 @@
 
 
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">
+                        <a class="nav-link disabled" href="{{url('/cart')}}" tabindex="-1" aria-disabled="true">
                             Cart
                             <small class="badge badge-danger">{{$cart_count}}</small>
                         </a>
@@ -105,8 +105,17 @@
                     <div class="card-body">
 
                         <ul class="list-group">
+                            <a href="{{url('/cart')}}">
+                                <li class="list-group-item bg-dark text-white">
+                                    Cart
+                                </li>
+                            </a>
                             <li class="list-group-item bg-dark text-white">
-                                Your Order List
+                                Your Pending Order List
+                            </li>
+
+                            <li class="list-group-item bg-dark text-white">
+                                Your Complete Order List
                             </li>
                             <li class="list-group-item bg-danger text-white">
                                 Your Profile Info

@@ -37,4 +37,9 @@ class PageController extends Controller
         ]);
         return redirect()->back();
     }
+
+    public function cart(Request $request){
+        $cart = ProductCart::with('product')->where('user_id',Auth::user()->id)->get();
+        return view('user.cart',compact('cart'));
+    }
 }
