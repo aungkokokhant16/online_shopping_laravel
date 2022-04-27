@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\ProductCart;
+use App\Models\ProductOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -41,5 +42,20 @@ class PageController extends Controller
     public function cart(Request $request){
         $cart = ProductCart::with('product')->where('user_id',Auth::user()->id)->get();
         return view('user.cart',compact('cart'));
+    }
+
+    public function makeOrder(){
+        $user_id = Auth::user()->id;
+        $cart = ProductCart::where('user_id',$user_id)->get();
+        foreach($cart as $c){
+            ProductOrder::create([
+                'user_id'=>$user_id,
+                'product_id'=>$c->product_id,
+                'qty'=>$c->qty,
+                'status'=>'pending',
+            ]);
+            ProductCart::where('id',$c->id)->delete();
+        }
+        return redirect()->back()->with('success','Order Success');
     }
 }

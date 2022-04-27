@@ -20,6 +20,7 @@ Route::group(['middleware'=>'ShareData'],function(){
 Route::get('/product/{slug}','PageController@productDetail');
 Route::get('/product/cart/add/{slug}','PageController@addToCart');
 Route::get('cart','PageController@cart');
+Route::get('order/make','PageController@makeOrder');
 // Route::get('/', [PageController::class, 'index']);
 
 #user auth

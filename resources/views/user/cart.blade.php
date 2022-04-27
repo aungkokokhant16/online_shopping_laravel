@@ -2,6 +2,7 @@
 
 @section('content')
 <h2>Your Cart List</h2>
+@include('user.auth.error')
 <table class="table table-striped">
         <thead>
                 <tr>
@@ -32,5 +33,5 @@
         </tbody>
 </table>
 
-<a href="" class="btn btn-success">Make Order</a>
+<a href="{{url('/order/make')}}" class="btn btn-success">Make Order</a>
 @endsection
