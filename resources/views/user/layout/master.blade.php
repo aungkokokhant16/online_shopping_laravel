@@ -65,8 +65,8 @@
                         </a>
                     </li>
                 </ul>
-                <form class="form-inline">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <form class="form-inline" method="GET" action="{{url('product/search')}}" >
+                    <input class="form-control mr-sm-2" name="search"  type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-primary" type="submit">Search</button>
                 </form>
             </div>
@@ -110,16 +110,22 @@
                                     Cart
                                 </li>
                             </a>
-                            <li class="list-group-item bg-dark text-white">
-                                Your Pending Order List
-                            </li>
+                            <a href="{{url('/order/pending')}}">
+                                <li class="list-group-item bg-dark text-white">
+                                    Your Pending Order List
+                                </li>
+                            </a>
 
-                            <li class="list-group-item bg-dark text-white">
-                                Your Complete Order List
-                            </li>
-                            <li class="list-group-item bg-danger text-white">
-                                Your Profile Info
-                            </li>
+                            <a href="{{'/order/complete'}}">
+                                <li class="list-group-item bg-dark text-white">
+                                    Your Complete Order List
+                                </li>
+                            </a>
+                            <a href="{{url('profile')}}">
+                                <li class="list-group-item bg-danger text-white">
+                                    Your Profile Info
+                                </li>
+                            </a>
                         </ul>
 
                     </div>
@@ -134,10 +140,12 @@
 
                             </li>
                             @foreach ($category as $c )
-                            <li class="list-group-item">
-                                {{$c->name}}
-                                <span class="badge badge-primary float-right">{{$c->product_count}}</span>
-                            </li>
+                            <a href="{{url('/product/category/'.$c->slug)}}">
+                                <li class="list-group-item">
+                                    {{$c->name}}
+                                    <span class="badge badge-primary float-right">{{$c->product_count}}</span>
+                                </li>
+                            </a>
                             @endforeach
 
                         </ul>

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductCart;
 use App\Models\ProductOrder;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -14,6 +16,20 @@ class PageController extends Controller
     public function index(){
         $products = Product::latest()->with('category')->paginate(6);
         return view('user.index',compact('products'));
+    }
+
+    public function byCategory($slug){
+        $cat_id =Category::where('slug',$slug)->first()->id;
+        $products = Product::where('category_id',$cat_id)->with('category')->paginate(6);
+        return view('user.index',compact('products'));
+        }
+
+    public function search(Request $request){
+        return $request->search;
+        $search = $request->search;
+        $product = Product::where('search','LIKE', "%{$search}%")->with('category')->paginate(6);
+        $product->appends($request->all());
+        return view('user.index',compact('product'));
     }
 
     public function productDetail(Request $request , $slug){
@@ -57,5 +73,49 @@ class PageController extends Controller
             ProductCart::where('id',$c->id)->delete();
         }
         return redirect()->back()->with('success','Order Success');
+    }
+
+    public function pendingOrder(){
+        $orders = ProductOrder::where('user_id',Auth::user()->id)
+        ->with('product')
+        ->where('status','pending')
+        ->get();
+        $status = 'pending';
+        return view('user.order',compact('orders','status'));
+    }
+
+    public function completeOrder(){
+        $orders = ProductOrder::where('user_id',Auth::user()->id)
+        ->with('product')
+        ->where('status','complete')
+        ->get();
+        $status = 'complete';
+        return view('user.order',compact('orders','status'));
+    }
+
+    public function profile(){
+        $user = Auth::user();
+        return view('user.auth.info',compact('user'));
+    }
+
+    public function changeProfile(Request $request){
+        $user = User::where('id',Auth::user()->id);
+        //check image
+        if($request->file('image')){
+            $file = $request->file('image');
+            $name = uniqid(time()).$file->getClientOriginalName();
+            $file_path = 'image/'.$name;
+            $file->storeAs('image',$name);
+        }else{
+            $file_path = $user->first()->image;
+        }
+        //update
+
+        $user->update([
+            'name'=>$request->name,
+            'email'=>$request->email,
+            'image'=>$file_path,
+        ]);
+        return redirect()->back()->with('success','Change Success!');
     }
 }

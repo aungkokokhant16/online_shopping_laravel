@@ -16,11 +16,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['middleware'=>'ShareData'],function(){
-    Route::get('/','PageController@index');
+Route::get('/','PageController@index');
+Route::get('product/category/{slug}','PageController@byCategory');
 Route::get('/product/{slug}','PageController@productDetail');
+Route::get('/product/search','PageController@search');
 Route::get('/product/cart/add/{slug}','PageController@addToCart');
 Route::get('cart','PageController@cart');
 Route::get('order/make','PageController@makeOrder');
+Route::get('order/pending','PageController@pendingOrder');
+Route::get('order/complete','PageController@completeOrder');
+
+Route::get('profile','Pagecontroller@profile');
+Route::post('profile','Pagecontroller@changeProfile');
 // Route::get('/', [PageController::class, 'index']);
 
 #user auth
